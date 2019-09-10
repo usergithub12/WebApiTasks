@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <div id="jobs">
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+                
+          
+
+            $("document").ready(function () {
+                $.ajax({
+                    url: "https://localhost:44326/api/values",
+                    method: "GET",
+                    
+                    success: function (res) {
+                        console.log(res);
+                        $("#jobs").append(
+                            res[0].category.name + "<br>" +
+                            res[0].deadline + "<br>" +
+                            res[0].description + "<br>" 
+                        );
+
+                    },
+                    
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+
+        });
+    </script>
+</body>
+</html>

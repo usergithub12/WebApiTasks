@@ -17,7 +17,5 @@ namespace WebApiTasks.Models
         {
             JobTags = new List<JobTag>();
         }
-
-        public ICollection<Job> Jobs { get; set; }
     }
 }

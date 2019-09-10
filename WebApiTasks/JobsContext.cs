@@ -7,12 +7,12 @@ using WebApiTasks.Models;
 
 namespace WebApiTasks
 {
-    public class TaskContext : DbContext
+    public class JobsContext : DbContext
     {
 
 
 
-        public TaskContext(DbContextOptions<TaskContext> options) : base(options)
+        public JobsContext(DbContextOptions<JobsContext> options) : base(options)
         {
            
 

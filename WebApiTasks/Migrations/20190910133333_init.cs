@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApiTasks.Migrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,8 +44,7 @@ namespace WebApiTasks.Migrations
                     Priority = table.Column<int>(nullable: false),
                     Deadline = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false),
-                    TagId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,16 +55,10 @@ namespace WebApiTasks.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Jobs_Tags_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobTag",
+                name: "JobTags",
                 columns: table => new
                 {
                     JobId = table.Column<int>(nullable: false),
@@ -73,15 +66,15 @@ namespace WebApiTasks.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobTag", x => new { x.JobId, x.TagId });
+                    table.PrimaryKey("PK_JobTags", x => new { x.JobId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_JobTag_Jobs_JobId",
+                        name: "FK_JobTags_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobTag_Tags_TagId",
+                        name: "FK_JobTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
@@ -94,29 +87,24 @@ namespace WebApiTasks.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jobs_TagId",
-                table: "Jobs",
-                column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobTag_TagId",
-                table: "JobTag",
+                name: "IX_JobTags_TagId",
+                table: "JobTags",
                 column: "TagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "JobTag");
+                name: "JobTags");
 
             migrationBuilder.DropTable(
                 name: "Jobs");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Categories");
         }
     }
 }

@@ -3,21 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiTasks;
 
 namespace WebApiTasks.Migrations
 {
-    [DbContext(typeof(TaskContext))]
-    [Migration("20190910075853_initial")]
-    partial class initial
+    [DbContext(typeof(JobsContext))]
+    partial class JobsContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -50,13 +48,9 @@ namespace WebApiTasks.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<int?>("TagId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("Jobs");
                 });
@@ -71,7 +65,7 @@ namespace WebApiTasks.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("JobTag");
+                    b.ToTable("JobTags");
                 });
 
             modelBuilder.Entity("WebApiTasks.Models.Tag", b =>
@@ -93,10 +87,6 @@ namespace WebApiTasks.Migrations
                         .WithMany("Jobs")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebApiTasks.Models.Tag")
-                        .WithMany("Jobs")
-                        .HasForeignKey("TagId");
                 });
 
             modelBuilder.Entity("WebApiTasks.Models.JobTag", b =>
