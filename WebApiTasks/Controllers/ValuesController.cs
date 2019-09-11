@@ -49,9 +49,30 @@ namespace WebApiTasks.Controllers
             if(job!=null)
             {
                 db.Jobs.Remove(job);
+                db.SaveChanges();
+                return true;
             }
+            else
+            {
+                return false;
+            }
+           
+        }
+        [HttpPost("Edit")]
+        public bool Edit([FromForm] JobsVM model)
+        {
+            var category = db.Categories.FirstOrDefault(c => c.Name == model.Category) ?? new Category { Name = model.Category };
+            var job = db.Jobs.Find(model.Id);
+            job.Category = category;
+            job.Deadline = DateTime.Parse(model.Deadline);
+            job.Priority = model.Priority;
+            job.Status = (JobStatus)model.Status;
+            job.Description = model.Description;
+            db.SaveChanges();
+
             return true;
         }
+
 
 
     }
