@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiTasks.Models;
+using WebApiTasks.ViewModels;
 
 namespace WebApiTasks.Controllers
 {
@@ -21,7 +22,38 @@ namespace WebApiTasks.Controllers
         [HttpGet]
         public IEnumerable<Job> GetJobs()
         {
-            return db.Jobs.Include(s => s.Category).Include(v => v.JobTag).ToList();
+            return db.Jobs.Include(s => s.Category).ToList();
         }
+
+        [HttpPost("Add")]
+        public bool AddJobs([FromForm] JobsVM model)
+        {
+            var category = db.Categories.FirstOrDefault(c => c.Name == model.Category) ?? new Category { Name = model.Category };
+            var job =  new Job
+            {
+                Category = category,
+                Deadline = DateTime.Parse(model.Deadline),
+                Priority = model.Priority,
+                Status = (JobStatus)model.Status,
+                Description = model.Description,
+            };
+            db.Jobs.Add(job);
+            db.SaveChanges();
+            return true;
+        }
+
+        [HttpPost("Delete")]
+        public bool Delete(int id)
+        {
+            var job = db.Jobs.Find(id);
+            if(job!=null)
+            {
+                db.Jobs.Remove(job);
+            }
+            return true;
+        }
+
+
     }
+
 }

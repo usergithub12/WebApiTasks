@@ -11,13 +11,50 @@
 
     </div>
 
+
+    <form action="https://localhost:44326/api/values/add" method="post">
+        <label>Id</label>
+        <input type="text" name="id" />
+        <br />
+        <label>Description</label>
+        <input type="text" name="description" />
+        <br />
+        <label>Priority</label>
+        <input type="text" name="priority" />
+        <br />
+        <label>Deadline</label>
+        <input type="text" name="deadline" />
+        <br />
+        <label>Status</label>
+        <input type="text" name="status" />
+        <br />
+        <label>Category</label>
+        <input type="text" name="category" />
+        <input type="submit" />
+    </form>
+ 
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
     <script>
+
+        function deleteClick(event) {
+            console.log("asd");
+            $.ajax({
+                url: "https://localhost:44326/api/values/delete?id=" + event.target.value,
+                method: "POST",
+
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
         $(function () {
-                
-          
 
             $("document").ready(function () {
                 $.ajax({
@@ -26,19 +63,44 @@
                     
                     success: function (res) {
                         console.log(res);
-                        $("#jobs").append(
-                            res[0].category.name + "<br>" +
-                            res[0].deadline + "<br>" +
-                            res[0].description + "<br>" 
-                        );
+                        for (var i = 0; i < res.length; i++) {
+                            $("#jobs").append(
+                                res[i].category.name + "<br>" +
+                                res[i].deadline + "<br>" +
+                                res[i].description + "<br>" +
+                                "<button onclick='deleteClick(event)' id='btn_delete' value='res[i].id'>Delete</button>"
+                                + "<br>"
+                            );
+                        }
+
+
+                        $("#btn_delete").click(function() {
+                            console.log("asd");
+                            $.ajax({
+                                url: "https://localhost:44326/api/values/delete?id=this.val()",
+                                method: "POST",
+
+                                success: function (res) {
+                                    console.log(res);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+                        })
 
                     },
-                    
                     error: function (error) {
                         console.log(error);
                     }
                 });
+
+
+              
+
             });
+
+           
 
 
         });
