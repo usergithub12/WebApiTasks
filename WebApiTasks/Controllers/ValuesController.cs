@@ -25,6 +25,13 @@ namespace WebApiTasks.Controllers
             return db.Jobs.Include(s => s.Category).ToList();
         }
 
+        [HttpGet("jobsbycat")]
+        public IEnumerable<Job> GetJobsByCategories(int id)
+        {
+            var jobs = db.Jobs.Include(x=>x.Category).Where(j => j.Category.Id == id).ToList();
+            return jobs;
+        }
+
         [HttpPost("Add")]
         public bool AddJobs([FromForm] JobsVM model)
         {
